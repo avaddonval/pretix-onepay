@@ -22,6 +22,7 @@ cmdclass = {
     'build': CustomBuild
 }
 
+
 setup(
     name='onepay',
     version='1.0.0',
