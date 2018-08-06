@@ -22,9 +22,11 @@ from .models import ReferencedOnepayObject
 from pretix.base.settings import SettingsSandbox
 logger = logging.getLogger('pretix.plugins.onepay')
 
-
-
-
+ONEPAY_URL = 'http://widget.test.stel.kz/order/create'
+ONEPAY_ACCOUNT = 'test'
+ONEPAY_SERVICE_ID = 4344
+ONEPAY_USER = '1138'
+ONEPAY_PASSWORD = 'onepaykassa'
 
 class Onepay(BasePaymentProvider):
     identifier = 'onepay'
@@ -114,11 +116,11 @@ class Onepay(BasePaymentProvider):
         if request.resolver_match and 'cart_namespace' in request.resolver_match.kwargs:
             kwargs['cart_namespace'] = request.resolver_match.kwargs['cart_namespace']
 
-        r = requests.post('http://widget.test.stel.kz/order/create',auth=('1138', 'onepaykassa'), data={
-            "serviceId":"4344", 
-            "account":"test",
-            "sum":int(order.total),
-            "successUrl":build_absolute_uri(request.event, 'plugins:onepay:success')+"?order="+order.code,
+        r = requests.post(ONEPAY_URL, auth=(ONEPAY_USER, ONEPAY_PASSWORD), data={
+            "serviceId": ONEPAY_SERVICE_ID, 
+            "account": ONEPAY_ACCOUNT,
+            "sum": int(order.total),
+            "successUrl": build_absolute_uri(request.event, 'plugins:onepay:success')+"?order="+order.code,
             "errorUrl": build_absolute_uri(request.event, 'plugins:onepay:error')+"?order="+order.code,
         })
         print(r.json())
