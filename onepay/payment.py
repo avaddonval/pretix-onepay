@@ -123,9 +123,7 @@ class Onepay(BasePaymentProvider):
             "successUrl": build_absolute_uri(request.event, 'plugins:onepay:success')+"?order="+order.code,
             "errorUrl": build_absolute_uri(request.event, 'plugins:onepay:error')+"?order="+order.code,
         })
-        print(r.json())
         pay_response=r.json()
         pay=ReferencedOnepayObject.objects.get_or_create(order=order, reference=pay_response["orderId"])
-        print(pay)
         
         return  pay_response["formUrl"] 

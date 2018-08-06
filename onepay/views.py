@@ -23,29 +23,31 @@ from pretix.multidomain.urlreverse import eventreverse
 logger = logging.getLogger('pretix.plugins.onepay')
 
 
-
-
-
 def success(request, *args, **kwargs):
     if request.GET.get('order'):
-        order = Order.objects.get(code=request.GET.get('order'))
+        try:
+            order = Order.objects.get(code=request.GET.get('order'))
+        except:
+            order = None
     else:
         order = None
-    print("order",order.total)
     if order:
         return redirect(eventreverse(request.event, 'presale:event.order', kwargs={
             'order': order.code,
             'secret': order.secret
         }) + ('?paid=yes' if order.status == Order.STATUS_PAID else ''))
     else:
-        return redirect(eventreverse(request.event, 'presale:event.checkout', kwargs={'step': 'payment'}))
+        return redirect(eventreverse(request.event,'presale:event.checkout.start'))
 
     
 
 def error(request, *args, **kwargs):
 
     if request.GET.get('order'):
-        order = Order.objects.get(code=request.GET.get('order'))
+        try:
+            order = Order.objects.get(code=request.GET.get('order'))
+        except:
+            order = None
     else:
         order = None
 
@@ -55,7 +57,8 @@ def error(request, *args, **kwargs):
             'secret': order.secret
         }) + ('?paid=yes' if order.status == Order.STATUS_PAID else ''))
     else:
-        return redirect(eventreverse(request.event, 'presale:event.checkout', kwargs={'step': 'payment'}))
+        return redirect(eventreverse(request.event,'presale:event.checkout.start'))
+
 
 
 @csrf_exempt
@@ -70,4 +73,4 @@ def callback(request, *args, **kwargs):
         onepay.order.status = Order.STATUS_CANCELED
         onepay.order.save()
 
-    return HttpResponse(onepay.order.status)
+    return HttpResponse()
