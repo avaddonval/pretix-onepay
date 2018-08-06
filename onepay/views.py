@@ -63,19 +63,11 @@ def error(request, *args, **kwargs):
 def callback(request, *args, **kwargs):
     data = json.loads(request.body)
 
-    print('__')
-    print('__')
-    print('__')
-    print('__')
-    print('__')
-    print('__')
     onepay=ReferencedOnepayObject.objects.get(reference=data["orderId"])
     if(data["status"]==1):
         mark_order_paid(onepay.order, 'onepay', data["transaction"])
     else:
         onepay.order.status = Order.STATUS_CANCELED
         onepay.order.save()
-
-
 
     return HttpResponse(onepay.order.status)
