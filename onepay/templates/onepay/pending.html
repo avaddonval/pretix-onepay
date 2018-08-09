@@ -1,12 +1,17 @@
 {% load i18n %}
 
-{% if retry %}
+{% if order.status=="c" %}
     <p>{% blocktrans trimmed %}
-        Our attempt to execute your Payment via PayPal has failed. Please try again or contact us.
+       onepay canceled in order preview
     {% endblocktrans %}</p>
-{% else %}
+{% endif %}
+{% if order.status=="n"  %}
     <p>{% blocktrans trimmed %}
-        We're waiting for an answer from PayPal regarding your payment. Please contact us, if this
-        takes more than a few hours.
+        onepay pending in order preview
+    {% endblocktrans %}</p>
+{% endif %}
+{% if order.status=="p"  %}
+    <p>{% blocktrans trimmed %}
+        onepay paid in order preview
     {% endblocktrans %}</p>
 {% endif %}

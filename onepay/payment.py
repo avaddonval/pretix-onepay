@@ -44,8 +44,8 @@ class Onepay(BasePaymentProvider):
                      label=_('Server'),
                      initial='test',
                      choices=(
-                         ('live', 'Live'),
-                         ('test', 'Test'),
+                         ('live', _('Live')),
+                         ('test', _('Test')),
                      ),
                  )),
                 ('service_id',
@@ -83,19 +83,14 @@ class Onepay(BasePaymentProvider):
     def checkout_confirm_render(self,request):
         
         return "<div class='alert alert-info'>%s<br /></div>" % (
-            _(build_absolute_uri(request.event, 'plugins:onepay:success')+"?order=123")
+            _("onepay checkout confirm string"))
         )
 
     def order_pending_render(self, request, order) -> str:
-        retry = True
-        try:
-            if order.payment_info and json.loads(order.payment_info)['state'] == 'pending':
-                retry = True
-        except KeyError:
-            pass
+        
         template = get_template('onepay/pending.html')
         ctx = {'request': request, 'event': self.event, 'settings': self.settings,
-               'retry': retry, 'order': order}
+             'order': order}
         return template.render(ctx)
 
 
