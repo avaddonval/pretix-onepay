@@ -74,6 +74,11 @@ class Onepay(BasePaymentProvider):
                      widget = (forms.PasswordInput()),
                      initial = ONEPAY_TEST_PASSWORD
                     
+                 )),
+                 ('site_url',
+                 forms.CharField(
+                     label=_('Site URL'),
+                     max_length=80,
                  ))
             ] +list(super().settings_form_fields.items())
         )
@@ -98,7 +103,7 @@ class Onepay(BasePaymentProvider):
         
         template = get_template('onepay/pending.html')
         ctx = {'request': request, 'event': self.event, 'settings': self.settings,
-             'order': order}
+             'order': order,'status':order.status}
         return template.render(ctx)
 
 
@@ -122,19 +127,24 @@ class Onepay(BasePaymentProvider):
             url=ONEPAY_TEST_URL
         else: 
             url=ONEPAY_PRODUCTION_URL
+        url_back=self.settings.get('site_url')+'/'+order.event.organizer.slug+'/'+order.event.slug+'/onepay/'
+        
+        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+        print(url_back+"success/?order="+order.code)
+        print(build_absolute_uri(request.event, 'plugins:onepay:success')+"?order="+order.code)
+        
         r = requests.post(url, auth=(self.settings.get('login'), self.settings.get('password')), data={
             "serviceId": self.settings.get('service_id'), 
             "userId": self.settings.get('account'),
             "summ": int(order.total),
-            "successUrl": build_absolute_uri(request.event, 'plugins:onepay:success')+"?order="+order.code,
-            "errorUrl": build_absolute_uri(request.event, 'plugins:onepay:error')+"?order="+order.code,
+            "successUrl": url_back+"success/?order="+order.code,
+            "errorUrl": url_back+"error/?order="+order.code,
             
         })
-        print(r)
+    
         pay_response=r.json()
         
-        print(build_absolute_uri(request.event, 'plugins:onepay:error')+"?order="+order.code)
-        print(pay_response)
+        
         if(pay_response["orderId"]):
             pay=ReferencedOnepayObject.objects.get_or_create(order=order, reference=pay_response["orderId"])
             return  pay_response["formUrl"] 
