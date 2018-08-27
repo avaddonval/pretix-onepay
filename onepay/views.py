@@ -72,5 +72,6 @@ def callback(request, *args, **kwargs):
     else:
         onepay.order.status = Order.STATUS_CANCELED
         onepay.order.save()
-
+    onepay.transaction=data['transaction']
+    onepay.save()
     return HttpResponse()
