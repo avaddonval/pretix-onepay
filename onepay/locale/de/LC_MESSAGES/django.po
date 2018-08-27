@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-07 19:01+0100\n"
+"POT-Creation-Date: 2018-08-27 17:20+0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: cybersec\n"
 "Language-Team: \n"
@@ -10,3 +10,63 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: onepay/__init__.py:10 onepay/payment.py:34
+msgid "Onepay"
+msgstr ""
+
+#: onepay/__init__.py:12
+msgid "onepay kassa24 payments"
+msgstr ""
+
+#: onepay/payment.py:45
+msgid "Server"
+msgstr ""
+
+#: onepay/payment.py:48
+msgid "Live"
+msgstr ""
+
+#: onepay/payment.py:49
+msgid "Test"
+msgstr ""
+
+#: onepay/payment.py:54
+msgid "Service Id"
+msgstr ""
+
+#: onepay/payment.py:60
+msgid "Account"
+msgstr ""
+
+#: onepay/payment.py:66
+msgid "Login"
+msgstr ""
+
+#: onepay/payment.py:72
+msgid "Password"
+msgstr ""
+
+#: onepay/payment.py:80
+msgid "Site URL"
+msgstr ""
+
+#: onepay/payment.py:99
+msgid "onepay checkout confirm string"
+msgstr ""
+
+#: onepay/templates/onepay/checkout_payment_form.html:3
+msgid "onepay front description"
+msgstr ""
+
+#: onepay/templates/onepay/pending.html:4
+msgid "onepay canceled in order preview"
+msgstr ""
+
+#: onepay/templates/onepay/pending.html:9
+msgid "onepay pending in order preview"
+msgstr ""
+
+#: onepay/templates/onepay/pending.html:14
+msgid "onepay paid in order preview"
+msgstr ""

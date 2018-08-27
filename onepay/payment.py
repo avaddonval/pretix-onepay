@@ -95,7 +95,7 @@ class Onepay(BasePaymentProvider):
 
     def checkout_confirm_render(self,request):
         
-        return "<div class='alert alert-info'>%s<br /></div>" % (
+        return "%s" % (
             _("onepay checkout confirm string")
         )
 
