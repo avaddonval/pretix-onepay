@@ -22,11 +22,12 @@ from .models import ReferencedOnepayObject
 from pretix.base.settings import SettingsSandbox
 logger = logging.getLogger('pretix.plugins.onepay')
 
-ONEPAY_URL = 'http://widget.test.stel.kz/order/create'
-ONEPAY_ACCOUNT = 'test'
-ONEPAY_SERVICE_ID = 4344
-ONEPAY_USER = '1138'
-ONEPAY_PASSWORD = 'onepaykassa'
+ONEPAY_TEST_URL = 'http://widget.test.stel.kz/order/create'
+ONEPAY_PRODUCTION_URL='https://onepay.kassa24.kz/transaction'
+ONEPAY_TEST_ACCOUNT = 'test'
+ONEPAY_TEST_SERVICE_ID = 4344
+ONEPAY_TEST_USER = '1138'
+ONEPAY_TEST_PASSWORD = 'onepaykassa'
 
 class Onepay(BasePaymentProvider):
     identifier = 'onepay'
@@ -52,20 +53,32 @@ class Onepay(BasePaymentProvider):
                  forms.CharField(
                      label=_('Service Id'),
                      max_length=80,
+                     initial=ONEPAY_TEST_SERVICE_ID
                  )),
                 ('account',
                  forms.CharField(
                      label=_('Account'),
                      max_length=80,
-                    
+                     initial=ONEPAY_TEST_ACCOUNT
+                 )),
+                 ('login',
+                 forms.CharField(
+                     label=_('Login'),
+                     max_length=80,
+                     initial=ONEPAY_TEST_USER
                  )),
                 ('password',
                  forms.CharField(
                      label=_('Password'),
                      max_length=80,
-                     widget = (forms.PasswordInput())
-                
+                     widget = (forms.PasswordInput()),
+                     initial = ONEPAY_TEST_PASSWORD
                     
+                 )),
+                 ('site_url',
+                 forms.CharField(
+                     label=_('Site URL'),
+                     max_length=80,
                  ))
             ] +list(super().settings_form_fields.items())
         )
@@ -82,15 +95,15 @@ class Onepay(BasePaymentProvider):
 
     def checkout_confirm_render(self,request):
         
-        return "<div class='alert alert-info'>%s<br /></div>" % (
-            _("onepay checkout confirm string"))
+        return "%s" % (
+            _("ATTENTION! Payment system takes 2% when paying via credit card. If your card do not support 3D Secure, then you cannot pay using credit card. We recommend to pay via Kassa24 account.")
         )
 
     def order_pending_render(self, request, order) -> str:
         
         template = get_template('onepay/pending.html')
         ctx = {'request': request, 'event': self.event, 'settings': self.settings,
-             'order': order}
+             'order': order,'status':order.status}
         return template.render(ctx)
 
 
@@ -110,15 +123,30 @@ class Onepay(BasePaymentProvider):
         kwargs = {}
         if request.resolver_match and 'cart_namespace' in request.resolver_match.kwargs:
             kwargs['cart_namespace'] = request.resolver_match.kwargs['cart_namespace']
-
-        r = requests.post(ONEPAY_URL, auth=(ONEPAY_USER, ONEPAY_PASSWORD), data={
-            "serviceId": ONEPAY_SERVICE_ID, 
-            "account": ONEPAY_ACCOUNT,
-            "sum": int(order.total),
-            "successUrl": build_absolute_uri(request.event, 'plugins:onepay:success')+"?order="+order.code,
-            "errorUrl": build_absolute_uri(request.event, 'plugins:onepay:error')+"?order="+order.code,
-        })
-        pay_response=r.json()
-        pay=ReferencedOnepayObject.objects.get_or_create(order=order, reference=pay_response["orderId"])
+        if(self.settings.get('server')=='test'):
+            url=ONEPAY_TEST_URL
+        else: 
+            url=ONEPAY_PRODUCTION_URL
+        url_back=self.settings.get('site_url')+'/'+order.event.organizer.slug+'/'+order.event.slug+'/onepay/'
         
-        return  pay_response["formUrl"] 
+        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+        print(url_back+"success/?order="+order.code)
+        print(build_absolute_uri(request.event, 'plugins:onepay:success')+"?order="+order.code)
+        
+        r = requests.post(url, auth=(self.settings.get('login'), self.settings.get('password')), data={
+            "serviceId": self.settings.get('service_id'), 
+            "userId": self.settings.get('account'),
+            "summ": int(order.total),
+            "successUrl": url_back+"success/?order="+order.code,
+            "errorUrl": url_back+"error/?order="+order.code,
+            
+        })
+    
+        pay_response=r.json()
+        
+        
+        if(pay_response["orderId"]):
+            pay=ReferencedOnepayObject.objects.get_or_create(order=order, reference=pay_response["orderId"])
+            return  pay_response["formUrl"] 
+        else:
+            return build_absolute_uri(request.event,'presale:event.checkout.start')

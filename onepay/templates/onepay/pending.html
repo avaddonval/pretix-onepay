@@ -1,17 +1,17 @@
 {% load i18n %}
 
-{% if order.status=="c" %}
+{% if status == "c" %}
     <p>{% blocktrans trimmed %}
-       onepay canceled in order preview
+        Your payment is declined.
     {% endblocktrans %}</p>
 {% endif %}
-{% if order.status=="n"  %}
+{% if status == "n"  %}
     <p>{% blocktrans trimmed %}
-        onepay pending in order preview
+        Your payment is processing (refresh page to have an actual status).
     {% endblocktrans %}</p>
 {% endif %}
-{% if order.status=="p"  %}
+{% if status == "p"  %}
     <p>{% blocktrans trimmed %}
-        onepay paid in order preview
+        Your payment is successfully completed
     {% endblocktrans %}</p>
 {% endif %}

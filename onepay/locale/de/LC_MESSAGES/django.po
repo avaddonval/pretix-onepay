@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-07 19:01+0100\n"
+"POT-Creation-Date: 2018-08-28 12:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: cybersec\n"
 "Language-Team: \n"
@@ -10,3 +10,74 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: pretix/plugins/onepay/onepay/__init__.py:10
+#: pretix/plugins/onepay/onepay/payment.py:34
+msgid "Onepay"
+msgstr ""
+
+#: pretix/plugins/onepay/onepay/__init__.py:12
+msgid "onepay kassa24 payments"
+msgstr ""
+
+#: pretix/plugins/onepay/onepay/payment.py:45
+msgid "Server"
+msgstr ""
+
+#: pretix/plugins/onepay/onepay/payment.py:48
+msgid "Live"
+msgstr ""
+
+#: pretix/plugins/onepay/onepay/payment.py:49
+msgid "Test"
+msgstr ""
+
+#: pretix/plugins/onepay/onepay/payment.py:54
+msgid "Service Id"
+msgstr ""
+
+#: pretix/plugins/onepay/onepay/payment.py:60
+msgid "Account"
+msgstr ""
+
+#: pretix/plugins/onepay/onepay/payment.py:66
+msgid "Login"
+msgstr ""
+
+#: pretix/plugins/onepay/onepay/payment.py:72
+msgid "Password"
+msgstr ""
+
+#: pretix/plugins/onepay/onepay/payment.py:80
+msgid "Site URL"
+msgstr "URL сайта"
+
+#: pretix/plugins/onepay/onepay/payment.py:99
+msgid ""
+"ATTENTION! Payment system takes 2% when paying via credit card. If your card "
+"do not support 3D Secure, then you cannot pay using credit card. We "
+"recommend to pay via Kassa24 account."
+msgstr ""
+"ВНИМАНИЕ! Система платежей снимает 2% при оплате банковской картой. Если "
+"ваша карта не поддерживает 3D Secure, платеж через карту невозможен. "
+"Рекомендуем оплатить через аккаунт КАССА 24"
+
+#: pretix/plugins/onepay/onepay/templates/onepay/checkout_payment_form.html:3
+msgid ""
+"After entering all data, you will be redirected to the Kassa24's payment "
+"system."
+msgstr ""
+"После заполнения всех данных вы будете перенаправлены в систему платежей от "
+"КАССА24"
+
+#: pretix/plugins/onepay/onepay/templates/onepay/pending.html:4
+msgid "Your payment is declined."
+msgstr "Ваш платеж отклонен"
+
+#: pretix/plugins/onepay/onepay/templates/onepay/pending.html:9
+msgid "Your payment is processing (refresh page to have an actual status)."
+msgstr "Ваш платеж в процессе обработки (обновите страницу чтобы получить актуальный статус)"
+
+#: pretix/plugins/onepay/onepay/templates/onepay/pending.html:14
+msgid "Your payment is successfully completed"
+msgstr "Ваш платеж успешно завершен"
