@@ -96,11 +96,7 @@ class Onepay(BasePaymentProvider):
     def checkout_confirm_render(self,request):
         
         return "%s" % (
-<<<<<<< HEAD
             _("ATTENTION! Payment system takes 2% when paying via credit card. If your card do not support 3D Secure, then you cannot pay using credit card. We recommend to pay via Kassa24 account.")
-=======
-            _("onepay checkout confirm string")
->>>>>>> e87ebf9cb53ad6d9a5f2f1ee4c9346f43624e422
         )
 
     def order_pending_render(self, request, order) -> str:
