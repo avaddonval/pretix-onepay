@@ -19,7 +19,6 @@ from pretix.base.services.orders import mark_order_paid
 from pretix.control.permissions import event_permission_required
 from pretix.multidomain.urlreverse import eventreverse
 
-
 logger = logging.getLogger('pretix.plugins.onepay')
 
 
@@ -65,7 +64,7 @@ def error(request, *args, **kwargs):
 @require_POST
 def callback(request, *args, **kwargs):
     data = json.loads(request.body)
-
+    logger.info("onepay cllback data {0}".format(request.body.decode('utf-8')))
     onepay=ReferencedOnepayObject.objects.get(reference=data["orderId"])
     if(data["status"]==1):
         mark_order_paid(onepay.order, 'onepay', data["transaction"])
