@@ -70,6 +70,21 @@ msgstr ""
 "После заполнения всех данных вы будете перенаправлены в систему платежей от "
 "КАССА24"
 
+#: pretix/plugins/onepay/onepay/templates/onepay/checkout_payment_form.html:6
+#, fuzzy, python-format
+#| msgid ""
+#| "ATTENTION! Payment system takes 2% when paying via credit card. If your "
+#| "card do not support 3D Secure, then you cannot pay using credit card. We "
+#| "recommend to pay via Kassa24 account."
+msgid ""
+"ATTENTION! Payment system takes 2%% when paying via credit card. If your "
+"card do not support 3D Secure, then you cannot pay using credit card. We "
+"recommend to pay via Kassa24 account."
+msgstr ""
+"ВНИМАНИЕ! Система платежей снимает 2% при оплате банковской картой. Если "
+"ваша карта не поддерживает 3D Secure, платеж через карту невозможен. "
+"Рекомендуем оплатить через аккаунт КАССА 24"
+
 #: pretix/plugins/onepay/onepay/templates/onepay/pending.html:4
 msgid "Your payment is declined."
 msgstr "Ваш платеж отклонен"
